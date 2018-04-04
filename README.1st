@@ -1,0 +1,20 @@
+Instalação do ambiente linux:
+Instalar Python 2.7 -> sudo apt-get install python-minimal
+Instalar pip -> sudo apt-get install python-pip
+Atualizar -> sudo pip install --upgrade pip
+Instalar pyocclient  -> sudo pip install pyocclient
+Instalar unittest-data-provider  -> pip install unittest-data-provider
+Instalar pycurl-> sudo pip install pycurl
+Instalar mysql-connector-> sudo pip install mysql-connector
+
+Instalar mysql -> sudo apt-get install mysql-server
+Criar banco de dados -> create database dboc;
+Criar tabela -> CREATE TABLE `tb_transferencia` (
+   `id` int(11) NOT NULL AUTO_INCREMENT,
+   `dt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+   `filename` varchar(300) DEFAULT NULL,
+   `size` int(11) DEFAULT NULL,
+   `time` decimal(8,4) DEFAULT NULL,
+   `qtdthread` int(11) DEFAULT NULL,
+   primary key (`id`))
+
