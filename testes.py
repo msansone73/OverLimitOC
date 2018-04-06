@@ -1,4 +1,3 @@
-import lerConfig
+import logUtil
 
-lista = lerConfig.get_parametro('uploadDirRecursivo','usuarios')
-print lista.replace(' ','').split(',')
+print logUtil.get_log_file_name()

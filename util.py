@@ -5,6 +5,7 @@ import os
 import sys
 import dbAccess
 import time
+import logUtil
 
 def geraOC(usuario):
     oc = owncloud.Client(lerConfig.get_server())
@@ -58,7 +59,9 @@ def apagaLog():
         pass
 
 def dbLog(filename, size, time, qtdthread):
-    dbAccess.insert_db_transfer(filename, size, time, qtdthread)
+    logUtil.insert_log_transfer(filename, size, time, qtdthread)
+    #dbAccess.insert_db_transfer(filename, size, time, qtdthread)
+
 
 def enviaDiretorioRecursivo(oc, dir, remDir):
     recriaDiretorio(oc,remDir)
@@ -78,7 +81,6 @@ def enviaDiretorioRecursivo(oc, dir, remDir):
                 dbLog(destino,os.stat(origem).st_size,t2-t1,qtdThead)
             except:  # catch *all* exceptions
                 e = sys.exc_info()[0]
-                logging.info('erro: ' + str(e) +' path: '+ msg)
 
 
 # identifica quantidade de thread com melhor performance
@@ -95,7 +97,6 @@ def cicloPeriodo(oc, remDir, minutos,qtdThead):
             oc.put_file_contents(destino, '0123456789')
         except:  # catch *all* exceptions
             e = sys.exc_info()[0]
-            logging.info('erro: ' + str(e))
             break
         t2 = time.time()
         dbLog(destino, 10, t2 - t1, qtdThead)

@@ -2,12 +2,15 @@ import util
 import logging
 import thread
 import lerConfig
+import logUtil
 import time
 import sys
 
 def main():
 #    oc00=util.geraOC('usuario00')
 #    util.recriaDiretorioBase(oc00)
+
+    logUtil.apaga_log_transfer()
 
     if (lerConfig.get_testes('uploadDirRecursivo')=='True'):
         qtd=int(lerConfig.get_parametro('uploadDirRecursivo','qtdThread'))
