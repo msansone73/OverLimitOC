@@ -25,7 +25,6 @@ def planoTeste00(oc):
 
 def recriaDiretorioBase(oc):
     dirBase=lerConfig.get_diretorioBase()
-    dirBase=dirBase+'_'+socket.gethostname()
     recriaDiretorio(oc, dirBase)
 
 def existeDiretorio(oc,path):
