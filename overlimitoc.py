@@ -5,6 +5,7 @@ import lerConfig
 import logUtil
 import time
 import sys
+import socket
 
 def main():
 #    oc00=util.geraOC('usuario00')
@@ -15,6 +16,7 @@ def main():
     if (lerConfig.get_testes('uploadDirRecursivo')=='True'):
         qtd=int(lerConfig.get_parametro('uploadDirRecursivo','qtdThread'))
         folder = lerConfig.get_parametro('uploadDirRecursivo', 'folder')
+        folder=folder+socket.gethostname()
         print "Test upload recusive, runing ..."
         usuarios = lerConfig.get_parametro('uploadDirRecursivo', 'usuarios')
         lusuario= usuarios.replace(' ', '').split(',')
@@ -33,7 +35,7 @@ def main():
             oc00 = util.geraOC(usuario)
             util.recriaDiretorioBase(oc00)
             for i in range(nthead):
-                thread.start_new( util.cicloPeriodo, (oc00,'dir00T'+str(nthead)+'-'+str(i),tempo, nthead))
+                thread.start_new( util.cicloPeriodo, (oc00,'dir00T'+str(nthead)+'-'+socket.gethostname()+'-'+str(i),tempo, nthead))
 
 
     while 1:

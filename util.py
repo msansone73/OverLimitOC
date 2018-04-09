@@ -5,7 +5,7 @@ import os
 import sys
 import time
 import logUtil
-import socket
+
 
 def geraOC(usuario):
     oc = owncloud.Client(lerConfig.get_server())
@@ -29,7 +29,6 @@ def recriaDiretorioBase(oc):
 
 def existeDiretorio(oc,path):
     try:
-        path=path+'_'+socket.gethostname()
         dir = oc.file_info(path)
         return True
     except:
@@ -37,7 +36,6 @@ def existeDiretorio(oc,path):
 
 def recriaDiretorio(oc,path):
     print "recriando diretorio "+ path
-    path = path + '_' + socket.gethostname()
     resultado=False
     while (not(resultado)):
         try:
