@@ -5,6 +5,7 @@ import os
 import sys
 import time
 import logUtil
+import socket
 
 def geraOC(usuario):
     oc = owncloud.Client(lerConfig.get_server())
@@ -24,10 +25,12 @@ def planoTeste00(oc):
 
 def recriaDiretorioBase(oc):
     dirBase=lerConfig.get_diretorioBase()
+    dirBase=dirBase+'_'+socket.gethostname()
     recriaDiretorio(oc, dirBase)
 
 def existeDiretorio(oc,path):
     try:
+        path=path+'_'+socket.gethostname()
         dir = oc.file_info(path)
         return True
     except:
@@ -35,6 +38,7 @@ def existeDiretorio(oc,path):
 
 def recriaDiretorio(oc,path):
     print "recriando diretorio "+ path
+    path = path + '_' + socket.gethostname()
     resultado=False
     while (not(resultado)):
         try:
@@ -82,12 +86,12 @@ def enviaDiretorioRecursivo(oc, dir, remDir):
                 e = sys.exc_info()[0]
 
 
-# identifica quantidade de thread com melhor performance
 def cicloPeriodo(oc, remDir, minutos,qtdThead):
     segundo=minutos*60
     t_inicio = time.time()
     remDir = lerConfig.get_diretorioBase() + '/' + remDir
-    oc.mkdir(remDir)
+    #oc.mkdir(remDir)
+    recriaDiretorio(oc, remDir)
     cont=0
     while (time.time()<(t_inicio+segundo)):
         destino = remDir + '/arq' + str(cont) + '.txt'
