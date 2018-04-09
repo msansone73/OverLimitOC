@@ -3,7 +3,6 @@ import lerConfig
 import logging
 import os
 import sys
-import dbAccess
 import time
 import logUtil
 
