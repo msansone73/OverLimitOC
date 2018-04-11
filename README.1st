@@ -1,20 +1,153 @@
-Instalação do ambiente linux:
-Instalar Python 2.7 -> sudo apt-get install python-minimal
-Instalar pip -> sudo apt-get install python-pip
-Atualizar -> sudo pip install --upgrade pip
-Instalar pyocclient  -> sudo pip install pyocclient
-Instalar unittest-data-provider  -> pip install unittest-data-provider
-Instalar pycurl-> sudo pip install pycurl
-Instalar mysql-connector-> sudo pip install mysql-connector
+Instalation of python environment:
+=====================================
+Install Python 2.7:
+    $sudo apt-get install python-minimal
 
-Instalar mysql -> sudo apt-get install mysql-server
-Criar banco de dados -> create database dboc;
-Criar tabela -> CREATE TABLE `tb_transferencia` (
-   `id` int(11) NOT NULL AUTO_INCREMENT,
-   `dt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-   `filename` varchar(300) DEFAULT NULL,
-   `size` int(11) DEFAULT NULL,
-   `time` decimal(8,4) DEFAULT NULL,
-   `qtdthread` int(11) DEFAULT NULL,
-   primary key (`id`))
+Install pip:
+    $sudo apt-get install python-pip
 
+Update pip:
+    $sudo pip install --upgrade pip
+
+Install pyocclient:
+    $sudo pip install pyocclient
+
+Install unittest-data-provider:
+    $sudo pip install unittest-data-provider
+
+Install pycurl:
+    $sudo pip install pycurl
+
+To execute smashbox2 run:
+    $python smashbox2.py
+
+SmashBox 2.0
+============
+Smashbox 2.0 is a script group that starts a lot of tests on owncloud to evaluate its performance.
+
+Tests:
+------
+Test upload folder recursive: This test upload a big folder and subfolders with any files with differents size, the total size is 1.6GB.
+Test upload amount: This test upload a lot of files with size is 10B, the process will run for a predefined period.
+
+Theads:
+-------
+All above tests can be run in multithread, defined in parameter
+
+Users:
+------
+All above tests can be run in multiusers simultaneously, defined in parameter
+
+
+SmashBox 2.0 - testeoc.config
+=============================
+All paramenter used by smashbox 2.0 can by find in testeoc.config file.
+The parameter are:
+
+URL Conection
+-------------
+Description: The url of owncloud server that will be tested.
+
+example:
+[conexao]
+server: https://staging.celfocus.com/storeit
+
+Tests
+-----
+Description: Informs whether a given test will or will not run with true or false parameters
+
+example:
+[testes]
+uploadDirRecursivo: True
+uploadDirPeriodo: False
+
+Output file
+-----------
+Description: The path and filename that will generate information to identify how many uploaded files, their size and transfer time. This information will be used to measure the performance of the test.
+
+example:
+[util]
+logAnalitic: /saida/content.log
+
+Note: The final file name will contain the container host, this feature allows the execution of several containers simultaneously with different output files.
+
+Users
+-----
+Description: Add a user (user and password) to access owncloud, is possible add how many users be necessary.
+
+example:
+[user00]
+user: nb99999
+password: 123456
+
+[user01]
+user: nb99998
+password: abcdef
+
+Test upload folder recursive
+----------------------------
+Description: Add parameter for test upload folder recursive:
+folder -> folder with files to upload recursivally
+qtdThread -> number of threads run simultaneously
+usuarios -> Smashbox 2.0 will run a instance to each user in this list, the users was above informated.
+
+example:
+[uploadDirRecursivo]
+folder: massa/testemain
+qtdThread: 3
+usuarios: usuario00 ,  usuario03
+
+Test upload amount
+------------------
+Description: Add parameter for test upload amount
+periodo_min -> number of minutes that this test will run
+qtdThread -> number of threads run simultaneously
+usuarios -> Smashbox 2.0 will run a instance to each user in this list, the users was above informated.
+
+example:
+[uploadDirPeriodo]
+periodo_min:60
+qtdThread:2
+usuarios: usuario00,usuario03
+
+
+Docker 18.03
+============
+Creating a image:
+-----------------
+The Dockerfile have all information to create a image to run containers os smashbox2, it will install in a python environment all library to execute owncloud test script.
+
+Command: docker build . -t python:smashbox2
+
+Description: Create image python:smashbox2 as data in Dockerfile
+Note: The above command must be executed in the same directory as the Dockerfile file
+
+
+Creating/executing a container:
+-------------------------------
+Command: docker run -d  --name container00 -h container00  -v /local/saida:/saida python:smashbox2
+
+Description: Create and execute a container as image python:smashbox2
+Notes:
+    The log file will be create in path "/local/saida" in example above.
+    The log file will have format "content_container00.log" in example above.
+    It is possible to create as many containers as necessary respecting the host limit, but with different names.
+
+
+List container:
+---------------
+Command: docker ps
+
+Description: List All container created and show <container id>
+
+Stop/Delete container
+----------------------
+Command: docker rm <container id>
+
+Description: Stop and delete a especific container with <container id>
+
+Stop/Delete todos os containers
+-------------------------------
+Command: docker rm $(docker ps -a -q)
+
+Description: Stop and delete all containers.

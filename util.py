@@ -5,11 +5,12 @@ import os
 import sys
 import time
 import logUtil
-
+import socket
 
 def geraOC(usuario):
     oc = owncloud.Client(lerConfig.get_server())
     oc.login(lerConfig.get_user(usuario), lerConfig.get_password(usuario))
+    logging.info('login efetuado.')
     return oc
 
 def planoTeste00(oc):
@@ -26,6 +27,8 @@ def planoTeste00(oc):
 def recriaDiretorioBase(oc):
     dirBase=lerConfig.get_diretorioBase()
     recriaDiretorio(oc, dirBase)
+    logging.info('folder base reciado')
+
 
 def existeDiretorio(oc,path):
     try:
@@ -35,7 +38,7 @@ def existeDiretorio(oc,path):
         return False
 
 def recriaDiretorio(oc,path):
-    print "recriando diretorio "+ path
+    print "recriando folder "+ path
     resultado=False
     while (not(resultado)):
         try:
@@ -46,7 +49,7 @@ def recriaDiretorio(oc,path):
             dir = oc.file_info(path)
             resultado = True
         except:
-            print "falha ao recriar diretorio "+ path
+            print "falha ao recriar folder "+ path
             resultado=False
 
 
@@ -81,6 +84,7 @@ def enviaDiretorioRecursivo(oc, dir, remDir):
                 dbLog(destino,os.stat(origem).st_size,t2-t1,qtdThead)
             except:  # catch *all* exceptions
                 e = sys.exc_info()[0]
+		logging.info('Erro EnviaDiretorioRecursivo()'+e)
 
 
 def cicloPeriodo(oc, remDir, minutos,qtdThead):
@@ -97,6 +101,7 @@ def cicloPeriodo(oc, remDir, minutos,qtdThead):
             oc.put_file_contents(destino, '0123456789')
         except:  # catch *all* exceptions
             e = sys.exc_info()[0]
+            logging.info('Erro cicloPeriodo - '+e)
             break
         t2 = time.time()
         dbLog(destino, 10, t2 - t1, qtdThead)
@@ -105,6 +110,6 @@ def cicloPeriodo(oc, remDir, minutos,qtdThead):
 
 
 apagaLog()
-logging.basicConfig(format='%(asctime)s %(message)s', filename=lerConfig.get_fileLogPath()+lerConfig.get_fileLogName(),level=logging.INFO)
+logging.basicConfig(format='%(asctime)s %(message)s', filename='/saida/container-'+socket.gethostname()+'.log',level=logging.INFO)
 logging.info('INICIO-------------------------------------------------------------')
 logging.info('inicia login')
