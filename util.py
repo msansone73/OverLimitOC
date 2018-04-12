@@ -60,14 +60,6 @@ def recriaDiretorio(oc,path):
             resultado=False
 
 
-def apagaLog():
-    arquivo_log=lerConfig.get_fileLogPath()+'/'+lerConfig.get_fileLogName()
-    try:
-        if os.path.exists(arquivo_log):
-            os.remove(arquivo_log)
-    except:
-        pass
-
 def dbLog(filename, size, time, qtdthread):
     logUtil.insert_log_transfer(filename, size, time, qtdthread)
     #dbAccess.insert_db_transfer(filename, size, time, qtdthread)
@@ -115,8 +107,7 @@ def cicloPeriodo(oc, remDir, minutos,qtdThead):
         cont=cont+1
 
 
-
-apagaLog()
-logging.basicConfig(format='%(asctime)s %(message)s', filename='/saida/container-'+socket.gethostname()+'.log',level=logging.INFO)
+fileLogPath=lerConfig.get_fileLogPath()
+logging.basicConfig(format='%(asctime)s %(message)s', filename=fileLogPath+'logfile-'+socket.gethostname()+'.txt',level=logging.INFO)
 logging.info('INICIO-------------------------------------------------------------')
 logging.info('inicia login')
