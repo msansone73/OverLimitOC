@@ -1,5 +1,6 @@
 import os
-path='D:/log/'
+import lerConfig
+path=lerConfig.get_fileLogPath()
 saida=path+'ArquivoConsolidado.csv'
 lista = os.listdir(path)
 
