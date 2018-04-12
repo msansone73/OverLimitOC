@@ -8,10 +8,17 @@ import logUtil
 import socket
 
 def geraOC(usuario):
-    oc = owncloud.Client(lerConfig.get_server())
-    oc.login(lerConfig.get_user(usuario), lerConfig.get_password(usuario))
-    logging.info('login efetuado.')
-    return oc
+    try:
+        oc = owncloud.Client(lerConfig.get_server())
+	logging.info('efetuando login...')
+        oc.login(lerConfig.get_user(usuario), lerConfig.get_password(usuario))
+        logging.info('login efetuado.')
+        return oc
+    except:
+        e=sys.exc_info()[0]
+        logging.info('Erro ao logar: ')
+	logging.info(e)
+        raise
 
 def planoTeste00(oc):
     logging.info('inicio planoTeste00')
@@ -84,7 +91,7 @@ def enviaDiretorioRecursivo(oc, dir, remDir):
                 dbLog(destino,os.stat(origem).st_size,t2-t1,qtdThead)
             except:  # catch *all* exceptions
                 e = sys.exc_info()[0]
-		logging.info('Erro EnviaDiretorioRecursivo()'+e)
+                logging.info('Erro EnviaDiretorioRecursivo()'+e)
 
 
 def cicloPeriodo(oc, remDir, minutos,qtdThead):
