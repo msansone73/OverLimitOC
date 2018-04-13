@@ -45,20 +45,32 @@ def existeDiretorio(oc,path):
         return False
 
 def recriaDiretorio(oc,path):
-    print "recriando folder "+ path
+    print("recriando folder "+ path)
     resultado=False
     while (not(resultado)):
         try:
             if (existeDiretorio(oc,path)):
+                print('recirarDiretorio - diretorio existe, ser deletado')
                 oc.delete(path)
-                time.sleep(5)
+                print('recriarDiretorio - diretorio deletado')
+                time.sleep(50)
+            print('recriarDiretorio - criando diretorio: '+path)
             oc.mkdir(path)
+            print('recriarDiretorio - diretorio criado')
             dir = oc.file_info(path)
             resultado = True
         except:
             print "falha ao recriar folder "+ path
             resultado=False
 
+
+def apagaLog():
+    arquivo_log=lerConfig.get_fileLogPath()+'/'+lerConfig.get_fileLogName()
+    try:
+        if os.path.exists(arquivo_log):
+            os.remove(arquivo_log)
+    except:
+        pass
 
 def dbLog(filename, size, time, qtdthread):
     logUtil.insert_log_transfer(filename, size, time, qtdthread)
@@ -107,7 +119,8 @@ def cicloPeriodo(oc, remDir, minutos,qtdThead):
         cont=cont+1
 
 
-fileLogPath=lerConfig.get_fileLogPath()
-logging.basicConfig(format='%(asctime)s %(message)s', filename=fileLogPath+'logfile-'+socket.gethostname()+'.txt',level=logging.INFO)
+
+apagaLog()
+logging.basicConfig(format='%(asctime)s %(message)s', filename='/saida/container-'+socket.gethostname()+'.log',level=logging.INFO)
 logging.info('INICIO-------------------------------------------------------------')
 logging.info('inicia login')
